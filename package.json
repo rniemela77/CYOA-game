@@ -1,0 +1,22 @@
+{
+  "name": "cyoa-game",
+  "version": "1.0.0",
+  "description": "A choose-your-own-adventure game which uses AI to generate the story and options. The user chooses an option and the AI generates the next part of the story.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch & browser-sync start --config bs-config.cjs --port 3000",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "browser-sync": "^3.0.0",
+    "vite": "^5.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
