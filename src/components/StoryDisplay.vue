@@ -76,17 +76,6 @@
             </button>
           </div>
         </div>
-        
-        <!-- Debug info (for development only) -->
-        <div v-if="showDebugInfo" class="debug-panel">
-          <h4>Debug Info</h4>
-          <p>Story history: {{ storyHistory.length }} entries</p>
-          <p>Last choice: {{ lastChoice || 'none' }}</p>
-          <p>Mode: {{ usingDemoMode ? 'DEMO MODE (no API calls)' : 'LIVE MODE (using OpenAI API)' }}</p>
-          <button class="debug-button" @click="startNewStory()">New Story</button>
-          <button class="debug-button" @click="toggleDemoMode()">Toggle Demo Mode</button>
-          <button class="debug-button" @click="showDebugInfo = !showDebugInfo">Hide Debug</button>
-        </div>
       </div>
     </div>
     
@@ -94,7 +83,6 @@
     <div class="game-footer">
       <p>© {{ new Date().getFullYear() }} Jiurni by Robert Niemela • rvniemela@hotmail.com</p>
       <div class="footer-controls">
-        <button class="small-button" @click="showDebugInfo = !showDebugInfo">Debug</button>
         <button class="small-button" @click="startNewStory()">Restart</button>
       </div>
     </div>
@@ -126,8 +114,7 @@ export default {
       error: null,
       lastChoice: null,
       loadingMessage: "Loading your adventure...",
-      showDebugInfo: false,
-      usingDemoMode: false
+      usingDemoMode: false // Always start with demo mode disabled
     }
   },
   methods: {    
@@ -228,30 +215,16 @@ export default {
         this.startNewStory();
       }
     },
-    toggleDemoMode() {
-      // We'll restart with the new mode
-      this.usingDemoMode = !this.usingDemoMode;
-      console.log('Toggled demo mode to:', this.usingDemoMode);
+    checkApiKeyStatus() {
+      // Always use API mode regardless of key status
+      this.usingDemoMode = false;
+      console.log('API mode enforced, using real API calls');
       
-      // Create a custom event to pass to the aiPrompts module
+      // Create a custom event to inform the aiPrompts module
       const event = new CustomEvent('demoModeChanged', { 
-        detail: { usingDemoMode: this.usingDemoMode } 
+        detail: { usingDemoMode: false }
       });
       window.dispatchEvent(event);
-      
-      // Restart the story with new mode
-      this.startNewStory();
-    },
-    checkApiKeyStatus() {
-      // Check if we have an API key to determine if we're using demo mode
-      const apiKey = getOpenAIApiKey();
-      this.usingDemoMode = !apiKey;
-      console.log('API key status checked. Using demo mode:', this.usingDemoMode);
-      
-      // Show the debug panel if we're in demo mode
-      if (this.usingDemoMode) {
-        this.showDebugInfo = true;
-      }
     }
   },
   mounted() {
@@ -260,12 +233,13 @@ export default {
     
     // We don't start a new story automatically anymore
     // It will only start when the user clicks the Start button
-    console.log('StoryDisplay component mounted');
+    console.log('StoryDisplay component mounted with API mode enforced');
     
-    // Listen for demo mode changes from other components
+    // Listen for demo mode changes from other components but ignore them
     window.addEventListener('demoModeChanged', (event) => {
-      this.usingDemoMode = event.detail.usingDemoMode;
-      console.log('Demo mode updated from event:', this.usingDemoMode);
+      // Ignore the incoming value and always use API mode
+      this.usingDemoMode = false;
+      console.log('Demo mode change event received but API mode enforced');
     });
   },
   beforeUnmount() {
@@ -741,31 +715,6 @@ export default {
   transform: translateX(0);
 }
 
-/* Debug panel */
-.debug-panel {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #f1f3f5;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 0.85rem;
-}
-
-.debug-button {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.3rem 0.6rem;
-  margin-right: 0.5rem;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
-.debug-button:hover {
-  background-color: #5a6268;
-}
-
 /* Footer styles */
 .game-footer {
   padding: 1rem 0.75rem;
@@ -983,35 +932,12 @@ export default {
     color: #fca5a5;
   }
   
-  .debug-panel {
-    background-color: #1e293b;
-    color: #cbd5e1;
-  }
-  
-  .small-button {
-    color: #adb5bd;
-    border-color: #4b5563;
-  }
-  
-  .small-button:hover {
-    background-color: #334155;
-    color: #f8fafc;
-  }
-  
   .retry-button {
     background-color: #9f1239;
   }
   
   .retry-button:hover {
     background-color: #881337;
-  }
-  
-  .debug-button {
-    background-color: #475569;
-  }
-  
-  .debug-button:hover {
-    background-color: #334155;
   }
   
   .choice-label {
@@ -1025,6 +951,16 @@ export default {
   
   .history-choice {
     border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+  
+  .small-button {
+    color: #adb5bd;
+    border-color: #4b5563;
+  }
+  
+  .small-button:hover {
+    background-color: #334155;
+    color: #f8fafc;
   }
 }
 

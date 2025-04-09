@@ -11,14 +11,15 @@ import { getOpenAIApiKey } from './utils/env';
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 const OPENAI_MODEL = 'gpt-4o'; // Updated to latest model
 
-// Demo mode flag - will use predefined stories instead of API calls
-let USE_DEMO_MODE = false; // Default is false to try to use the API key
+// Demo mode flag - always false to force API usage
+let USE_DEMO_MODE = false;
 
-// Listen for demo mode toggle events from the UI
+// No need to listen for demo mode toggle events since debug functionality is removed
+// But keeping minimal implementation for compatibility
 if (typeof window !== 'undefined') {
-  window.addEventListener('demoModeChanged', (event) => {
-    USE_DEMO_MODE = event.detail.usingDemoMode;
-    console.log('aiPrompts: Demo mode updated to:', USE_DEMO_MODE);
+  window.addEventListener('demoModeChanged', () => {
+    // Demo mode toggle functionality removed
+    USE_DEMO_MODE = false;
   });
 }
 
@@ -30,13 +31,12 @@ if (typeof window !== 'undefined') {
 export async function generateInitialStory(theme = null) {
   console.log('generateInitialStory called with theme:', theme);
   
-  // Use demo mode if enabled or if no API key is available
+  // Get API key 
   const apiKey = getOpenAIApiKey();
-  const shouldUseDemoMode = USE_DEMO_MODE || !apiKey;
   
-  if (shouldUseDemoMode) {
-    console.log('Using demo mode for initial story');
-    // Return a predefined story without making an API call
+  // Use demo mode if no API key is available
+  if (!apiKey) {
+    console.log('No API key found, falling back to demo content');
     return getDemoInitialStory(theme);
   }
   
@@ -54,13 +54,12 @@ export async function generateInitialStory(theme = null) {
 export async function generateStoryContinuation(currentStory, chosenOption) {
   console.log('generateStoryContinuation called with option:', chosenOption);
   
-  // Use demo mode if enabled or if no API key is available
+  // Get API key
   const apiKey = getOpenAIApiKey();
-  const shouldUseDemoMode = USE_DEMO_MODE || !apiKey;
   
-  if (shouldUseDemoMode) {
-    console.log('Using demo mode for story continuation');
-    // Return a predefined continuation without making an API call
+  // Use demo mode if no API key is available
+  if (!apiKey) {
+    console.log('No API key found, falling back to demo content');
     return getDemoContinuation(currentStory, chosenOption);
   }
   
