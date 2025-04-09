@@ -41,6 +41,11 @@
         <div class="story-container" :class="{ 'loading': isLoading }">
           <p class="story-text">{{ currentStory.text }}</p>
           <div v-if="isLoading" class="loading-indicator">
+            <div class="loading-animation">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
             <span>{{ loadingMessage }}</span>
           </div>
           <div v-if="error" class="error-message">
@@ -147,8 +152,17 @@ export default {
         
         console.log(`Selected option: ${option}`);
         
+        // Replace current story text with a loading placeholder
+        this.currentStory = {
+          text: "The story continues...",
+          options: []
+        };
+        
         // Generate the next part of the story using AI
-        const nextStory = await generateStoryContinuation(this.currentStory, option);
+        const nextStory = await generateStoryContinuation({
+          text: this.storyHistory[this.storyHistory.length - 1].text,
+          options: []
+        }, option);
         
         this.currentStory = nextStory;
         
@@ -187,6 +201,12 @@ export default {
         // Clear the history when starting a new story
         this.storyHistory = [];
         this.lastChoice = null;
+        
+        // Set a loading placeholder for the new story
+        this.currentStory = {
+          text: "Your adventure is about to begin...",
+          options: []
+        };
         
         // Generate the initial story and options using AI
         const generatedStory = await generateInitialStory();
@@ -541,6 +561,50 @@ export default {
   padding-top: 0.5rem;
   border-top: 1px dashed rgba(0, 0, 0, 0.1);
   font-style: italic;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.loading-animation {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #6c757d;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  } 
+  40% { 
+    transform: scale(1);
+  }
+}
+
+/* Dark mode styles for loading animation */
+@media (prefers-color-scheme: dark) {
+  .dot {
+    background-color: #cbd5e1;
+  }
 }
 
 .error-message {
