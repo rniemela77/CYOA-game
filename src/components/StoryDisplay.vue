@@ -82,9 +82,6 @@
     <!-- Footer -->
     <div class="game-footer">
       <p>© {{ new Date().getFullYear() }} Jiurni by Robert Niemela • rvniemela@hotmail.com</p>
-      <div class="footer-controls">
-        <button class="small-button" @click="startNewStory()">Restart</button>
-      </div>
     </div>
   </div>
 </template>
@@ -729,28 +726,6 @@ export default {
   bottom: 0;
   background-color: #f8f9fa;
   z-index: 10;
-}
-
-.footer-controls {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.small-button {
-  background-color: transparent;
-  color: #6c757d;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.small-button:hover {
-  background-color: #e9ecef;
-  color: #495057;
 }
 
 /* Responsive styles */
