@@ -32,5 +32,8 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
 }
 </style> 

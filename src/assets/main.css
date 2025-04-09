@@ -1,17 +1,86 @@
-body {
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  color: #333;
+/* Base styles and typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:wght@300;400;700&display=swap');
+
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
 }
 
+body {
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #343a40;
+  background-color: #f8f9fa;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease;
+}
+
+/* Simple fade-in animation for content */
+.fade-in {
+  animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Focus styling for accessibility */
+*:focus-visible {
+  outline: 2px solid #6c757d;
+  outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a2e;
+    color: #ffffff;
+  }
+  
+  *:focus-visible {
+    outline-color: #f8f9fa;
+  }
+
+  .container {
+    background: #2a2a40;
+  }
+
+  .story-container {
+    background-color: #252538;
+  }
+
+  h1 {
+    color: #e9ecef;
+  }
+}
+
+/* Base button styling */
+button {
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Container styling */
 .container {
-  width: 80%;
+  width: 95%;
   max-width: 800px;
-  margin: 30px auto;
-  padding: 20px;
+  margin: var(--spacing-md) auto;
+  padding: var(--spacing-md);
   background: white;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -20,33 +89,83 @@ body {
 h1 {
   text-align: center;
   color: #2c3e50;
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.75rem;
 }
 
 .story-container {
-  margin-bottom: 20px;
-  padding: 15px;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm);
   background-color: #f9f9f9;
   border-radius: 5px;
-  border-left: 5px solid #3498db;
 }
 
 .options-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--spacing-sm);
 }
 
 .btn {
-  padding: 10px 15px;
+  padding: var(--spacing-sm) var(--spacing-md);
   background-color: #3498db;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 1rem;
+  min-height: 44px; /* Better touch target size */
 }
 
 .btn:hover {
   background-color: #2980b9;
+}
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .container {
+    width: 80%;
+    margin: var(--spacing-xl) auto;
+    padding: var(--spacing-lg);
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .story-container {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .options-container {
+    gap: var(--spacing-md);
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+  
+  .container {
+    width: 100%;
+    margin: 0;
+    padding: var(--spacing-sm);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .story-container {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
 } 

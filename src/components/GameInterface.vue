@@ -1,18 +1,16 @@
 <template>
   <div class="game-interface">
     <div class="game-header">
-      <h1>{{ title }}</h1>
+      <h1 class="game-title">{{ title }}</h1>
     </div>
     
     <div class="game-content">
-      <div class="scroll-container">
-        <div class="story-scroll">
-          <slot name="story"></slot>
-        </div>
+      <div class="story-container">
+        <slot name="story"></slot>
       </div>
       
       <div class="options-panel">
-        <h3>What will you do?</h3>
+        <h3 class="options-title">What will you do?</h3>
         <slot name="options"></slot>
       </div>
     </div>
@@ -44,80 +42,160 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #2c3e50;
-  color: #ecf0f1;
-  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  transition: background-color 0.3s ease;
 }
 
 .game-header {
-  background-color: #34495e;
-  padding: 1rem;
+  padding: 1rem 0.75rem;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.game-header h1 {
+.game-title {
   margin: 0;
-  font-size: 2rem;
-  color: #e74c3c;
-  font-family: 'Cinzel', serif;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 2.2rem;
+  color: #343a40;
+  font-weight: 300;
+  letter-spacing: -0.5px;
 }
 
 .game-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  gap: 2rem;
-  max-width: 800px;
+  padding: 1rem;
+  gap: 1.5rem;
+  max-width: 760px;
   margin: 0 auto;
   width: 100%;
 }
 
-.scroll-container {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23d2b48c" opacity="0.2"/><path d="M0 0L100 100M100 0L0 100" stroke="%23000" stroke-width="1" opacity="0.1"/></svg>');
-  border-radius: 8px;
-  border: 2px solid #8b4513;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+.story-container {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
-.story-scroll {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #333;
-  background-color: rgba(255, 253, 240, 0.9);
-  padding: 1.5rem;
-  border-radius: 4px;
+.story-container:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
 }
 
 .options-panel {
-  background-color: #34495e;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.options-panel h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #f39c12;
-  text-align: center;
-  font-size: 1.4rem;
+.options-title {
+  margin: 0 0 0.75rem 0;
+  color: #212529;
+  font-size: 1.3rem;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.options-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background-color: #495057;
+  opacity: 0.4;
 }
 
 .game-footer {
-  background-color: #34495e;
-  padding: 1rem;
+  padding: 1rem 0.75rem;
   text-align: center;
-  font-size: 0.9rem;
-  color: #95a5a6;
+  font-size: 0.85rem;
+  color: #6c757d;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 @media (min-width: 768px) {
   .game-content {
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+  }
+  
+  .game-header {
+    padding: 1.5rem 1rem;
+  }
+  
+  .story-container {
     padding: 2rem;
+  }
+  
+  .options-panel {
+    padding: 1.5rem;
+    gap: 0.75rem;
+  }
+  
+  .options-title {
+    margin: 0 0 1.25rem 0;
+    font-size: 1.4rem;
+  }
+  
+  .game-footer {
+    padding: 1.5rem 1rem;
+  }
+  
+  .game-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .game-interface {
+    background-color: #1a1a2e;
+    color: #e6e6e6;
+  }
+  
+  .game-title {
+    color: #f8f9fa;
+  }
+  
+  .story-container {
+    background-color: #0f172a;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .options-title {
+    color: #f8f9fa;
+  }
+  
+  .options-title::after {
+    background-color: #f8f9fa;
+    opacity: 0.2;
+  }
+  
+  .game-footer {
+    color: #adb5bd;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .game-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .options-panel {
+    background-color: rgba(15, 23, 42, 0.7);
   }
 }
 </style> 
