@@ -1,4 +1,4 @@
-# Jiurni
+# Chuzapath
 A simple Choose Your Own Adventure game.
 
 # Flow

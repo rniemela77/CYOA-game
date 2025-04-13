@@ -1,5 +1,5 @@
 /**
- * Jiurni - AI Story Generation Prompts
+ * Chuzapath - AI Story Generation Prompts
  * 
  * This file contains the prompts and instructions for generating interactive
  * story content using the OpenAI API.
@@ -158,7 +158,7 @@ function createInitialStoryPrompt(theme) {
   
   return [
     { role: 'system', content: 
-      `You are a creative storyteller for an interactive fiction game called Jiurni. 
+      `You are a creative storyteller for an interactive fiction game called Chuzapath. 
       Your task is to create immersive, engaging story segments with meaningful choices.
       
       Follow these rules:
@@ -197,7 +197,7 @@ function createInitialStoryPrompt(theme) {
 function createContinuationPrompt(currentStory, chosenOption) {
   return [
     { role: 'system', content: 
-      `You are a creative storyteller for an interactive fiction game called Jiurni.
+      `You are a creative storyteller for an interactive fiction game called Chuzapath.
       Your task is to continue the story based on the player's chosen option.
       
       Follow these rules:

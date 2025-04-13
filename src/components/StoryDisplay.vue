@@ -2,7 +2,7 @@
   <div class="game-interface">
     <!-- Header -->
     <div class="game-header">
-      <h1 class="game-title">Jiurni - AI Text Adventure</h1>
+      <h1 class="game-title">Chuzapath - AI Text Adventure</h1>
     </div>
     
     <!-- Start Screen -->
@@ -81,7 +81,7 @@
     
     <!-- Footer -->
     <div class="game-footer">
-      <p>© {{ new Date().getFullYear() }} Jiurni by Robert Niemela • rvniemela@hotmail.com</p>
+      <p>© {{ new Date().getFullYear() }} Chuzapath by Robert Niemela • rvniemela@hotmail.com</p>
     </div>
   </div>
 </template>
