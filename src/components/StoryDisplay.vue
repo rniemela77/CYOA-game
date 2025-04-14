@@ -19,47 +19,50 @@
     
     <!-- Main content (only shown after clicking Start) -->
     <div v-else class="game-content">
-      <!-- Scrollable story content -->
-      <div class="story-scroll-container">
-        <!-- Story history directly in the main content -->
-        <div v-if="storyHistory.length > 0" class="story-history">
-          <div v-for="(historyItem, index) in storyHistory" :key="index" class="history-item">
-            <p class="history-text">{{ historyItem.text }}</p>
-            <div class="history-choice">
-              <span class="choice-label">You chose:</span>
-              <span class="choice-text">{{ historyItem.choiceMade }}</span>
+      <!-- Story container - restructured for more prominence -->
+      <div class="story-section">
+        <!-- Scrollable story content -->
+        <div class="story-scroll-container">
+          <!-- Story history directly in the main content -->
+          <div v-if="storyHistory.length > 0" class="story-history">
+            <div v-for="(historyItem, index) in storyHistory" :key="index" class="history-item">
+              <p class="history-text">{{ historyItem.text }}</p>
+              <div class="history-choice">
+                <span class="choice-label">You chose:</span>
+                <span class="choice-text">{{ historyItem.choiceMade }}</span>
+              </div>
+            </div>
+            <div class="segment-divider">
+              <div class="divider-line"></div>
+              <div class="marker-dot"></div>
+              <div class="divider-line"></div>
             </div>
           </div>
-          <div class="segment-divider">
-            <div class="divider-line"></div>
-            <div class="marker-dot"></div>
-            <div class="divider-line"></div>
-          </div>
-        </div>
-        
-        <!-- Current story container -->
-        <div class="story-container" :class="{ 'loading': isLoading }">
-          <p class="story-text">{{ currentStory.text }}</p>
-          <div v-if="isLoading" class="loading-indicator">
-            <div class="loading-animation">
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
+          
+          <!-- Current story container with more space -->
+          <div class="story-container" :class="{ 'loading': isLoading }">
+            <p class="story-text">{{ currentStory.text }}</p>
+            <div v-if="isLoading" class="loading-indicator">
+              <div class="loading-animation">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+              <span>{{ loadingMessage }}</span>
             </div>
-            <span>{{ loadingMessage }}</span>
+            <div v-if="error" class="error-message">
+              {{ error }}
+              <button class="retry-button" @click="retryLastAction">Try Again</button>
+            </div>
           </div>
-          <div v-if="error" class="error-message">
-            {{ error }}
-            <button class="retry-button" @click="retryLastAction">Try Again</button>
-          </div>
+          
+          <!-- Add some padding at the bottom for better scrolling experience -->
+          <div class="story-bottom-padding"></div>
         </div>
-        
-        <!-- Add some padding at the bottom for better scrolling experience -->
-        <div class="story-bottom-padding"></div>
       </div>
       
-      <!-- Fixed options container -->
-      <div class="fixed-options">
+      <!-- Options section - visually separated from story content -->
+      <div class="options-section">
         <!-- Options container -->
         <div class="options-panel">
           <h3 class="options-title">What will you do?</h3>
@@ -344,7 +347,7 @@ export default {
 
 /* Header styles */
 .game-header {
-  padding: 1rem 0.75rem;
+  padding: 0.5rem 0.5rem; /* Reduced from 1rem 0.75rem */
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: sticky;
@@ -355,7 +358,7 @@ export default {
 
 .game-title {
   margin: 0;
-  font-size: 2.2rem;
+  font-size: 1.8rem; /* Reduced from 2.2rem */
   color: #343a40;
   font-weight: 300;
   letter-spacing: -0.5px;
@@ -366,29 +369,37 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-  max-width: 760px;
+  max-width: 1000px; /* Increased from 760px for more width */
   margin: 0 auto;
   width: 100%;
   position: relative;
-  height: calc(100vh - 130px); /* Adjust height to account for header and footer */
-  overflow: hidden; /* Prevent scrolling of the entire content */
+  height: calc(100vh - 100px); /* Reduced from 130px to account for smaller header/footer */
+  overflow: hidden;
+}
+
+/* Story section - new container */
+.story-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Scrollable story container */
 .story-scroll-container {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 1rem 0 1rem;
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* For Firefox */
+  padding: 1rem 1.5rem 0 1.5rem; /* Reduced top padding */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* Needed for Firefox */
+  min-height: 0;
 }
 
 /* Story bottom padding */
 .story-bottom-padding {
-  height: 2rem; /* Add more space at the bottom of the scrollable area */
+  height: 1rem; /* Reduced from 3rem */
 }
 
 /* Scrollbar styling for Webkit browsers (Chrome, Safari, Edge) */
@@ -421,27 +432,28 @@ export default {
 .history-item {
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.5rem; /* Reduced from 2.5rem */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   border-left: 3px solid #6c757d;
+  margin-bottom: 1rem; /* Add small margin between history items */
 }
 
 .history-text {
   margin: 0;
   text-align: left;
   font-family: 'Merriweather', 'Georgia', serif;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.05rem; /* Reduced slightly */
+  line-height: 1.5; /* Reduced from 1.8 */
   color: #495057;
   letter-spacing: 0.01em;
   font-weight: 400;
 }
 
 .history-choice {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
+  margin-top: 0.5rem; /* Reduced from 1rem */
+  padding-top: 0.5rem; /* Reduced from 0.75rem */
   border-top: 1px dashed rgba(0, 0, 0, 0.1);
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Reduced from 0.9rem */
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -464,7 +476,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0;
+  padding: 0.25rem 0; /* Reduced from 0.5rem */
 }
 
 .divider-line {
@@ -485,14 +497,15 @@ export default {
 .story-container {
   background-color: white;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.5rem; /* Reduced from 2.5rem */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   position: relative;
   border-left: 3px solid #2b6cb0;
-  flex: 1; /* Make it grow to fill available space */
+  flex: 1;
   display: flex;
   flex-direction: column;
+  margin-bottom: 0.75rem; /* Reduced from 1.5rem */
 }
 
 .story-container:hover {
@@ -509,16 +522,17 @@ export default {
   margin: 0;
   text-align: left;
   font-family: 'Merriweather', 'Georgia', serif;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.05rem; /* Reduced from 1.15rem */
+  line-height: 1.4; /* Further reduced from 1.5 for more compact text */
   color: #212529;
   letter-spacing: 0.01em;
   font-weight: 400;
-  flex: 1; /* Allow the text to grow and push other elements */
+  flex: 1;
+  min-height: 50px; /* Further reduced from 100px */
 }
 
 .story-text::first-letter {
-  font-size: 1.6em;
+  font-size: 1.5em; /* Further reduced */
   font-weight: 400;
   line-height: 1;
   padding-right: 0.1em;
@@ -606,9 +620,9 @@ export default {
   background-color: #c82333;
 }
 
-/* Fixed options container */
-.fixed-options {
-  padding: 0 1rem 1rem 1rem;
+/* Options section - replaces fixed-options */
+.options-section {
+  padding: 0 1.5rem 0.75rem 1.5rem; /* Reduced bottom padding */
   background-color: #f8f9fa;
   z-index: 5;
 }
@@ -618,22 +632,22 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1rem;
+  gap: 0.25rem; /* Further reduced from 0.5rem */
+  padding: 0.75rem 0.75rem 0.5rem 0.75rem; /* Reduced bottom padding */
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  margin-top: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .options-title {
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 0.5rem 0; /* Reduced bottom margin */
   color: #212529;
-  font-size: 1.3rem;
+  font-size: 1.1rem; /* Reduced from 1.3rem */
   font-weight: 500;
   position: relative;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.25rem; /* Reduced padding */
 }
 
 .options-title::after {
@@ -665,8 +679,8 @@ export default {
   color: #212529;
   border: 1px solid #dee2e6;
   border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem; /* Reduced padding */
+  margin-bottom: 0.4rem; /* Slightly reduced */
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -714,14 +728,14 @@ export default {
 
 /* Footer styles */
 .game-footer {
-  padding: 1rem 0.75rem;
+  padding: 0.5rem 0.5rem; /* Reduced from 1rem 0.75rem */
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.75rem; /* Reduced from 0.85rem */
   color: #6c757d;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem; /* Reduced gap */
   position: sticky;
   bottom: 0;
   background-color: #f8f9fa;
@@ -731,74 +745,74 @@ export default {
 /* Responsive styles */
 @media (min-width: 768px) {
   .game-content {
-    height: calc(100vh - 150px); /* Adjust for larger header/footer on bigger screens */
+    height: calc(100vh - 110px); /* Reduced from 150px */
   }
   
   .story-scroll-container {
-    padding: 2rem 2rem 0 2rem;
+    padding: 1.5rem 2rem 0 2rem; /* Reduced from 2.5rem */
   }
   
-  .fixed-options {
-    padding: 0 2rem 2rem 2rem;
+  .options-section {
+    padding: 0 2rem 1rem 2rem; /* Reduced from 2.5rem */
   }
   
   .story-bottom-padding {
-    height: 2rem;
+    height: 1rem; /* Reduced from 3rem */
   }
   
   .game-header {
-    padding: 1.5rem 1rem;
+    padding: 0.75rem 0.75rem; /* Reduced from 1.5rem 1rem */
   }
   
   .story-container {
-    padding: 2rem;
+    padding: 1.75rem; /* Reduced from 2.5rem */
   }
   
   .history-item {
-    padding: 2rem;
+    padding: 1.75rem; /* Reduced from 2.5rem */
   }
   
   .options-panel {
-    padding: 1.5rem;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+    padding: 1rem; /* Reduced from 1.5rem */
+    gap: 0.5rem; /* Reduced from 0.75rem */
+    margin-top: 0.75rem; /* Reduced from 1.5rem */
   }
   
   .options-title {
-    margin: 0 0 1.25rem 0;
-    font-size: 1.4rem;
+    margin: 0 0 0.75rem 0; /* Reduced from 1.25rem */
+    font-size: 1.2rem; /* Reduced from 1.4rem */
   }
   
   .game-footer {
-    padding: 1.5rem 1rem;
+    padding: 0.75rem 0.75rem; /* Reduced from 1.5rem 1rem */
   }
   
   .game-title {
-    font-size: 2.5rem;
+    font-size: 2rem; /* Reduced from 2.5rem */
   }
   
   .option-button {
-    padding: 1rem 1.25rem;
-    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem; /* Reduced from 1rem 1.25rem */
+    margin-bottom: 0.5rem; /* Reduced from 0.75rem */
   }
   
   .option-text {
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.4; /* Reduced from 1.5 */
   }
   
   .story-text {
-    font-size: 1.125rem;
-    line-height: 1.8;
+    font-size: 1.1rem; /* Reduced from 1.25rem */
+    line-height: 1.6; /* Reduced from 1.9 */
   }
   
   .story-text::first-letter {
-    font-size: 1.8em;
+    font-size: 1.6em; /* Reduced from 2em */
   }
   
   .history-text {
-    font-size: 1.05rem;
-    line-height: 1.7;
+    font-size: 1.05rem; /* Reduced from 1.15rem */
+    line-height: 1.5; /* Reduced from 1.8 */
   }
 }
 
@@ -821,7 +835,7 @@ export default {
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent; /* For Firefox */
   }
   
-  .fixed-options {
+  .options-section {
     background-color: #1a1a2e;
   }
   
@@ -875,7 +889,8 @@ export default {
   }
   
   .options-panel {
-    background-color: rgba(15, 23, 42, 0.7);
+    background-color: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   }
   
   .story-text {
@@ -937,51 +952,71 @@ export default {
     background-color: #334155;
     color: #f8fafc;
   }
+  
+  /* Fix dark mode spacing issues */
+  .story-text {
+    line-height: 1.4; /* Keep consistent with light mode */
+  }
+  
+  .history-text {
+    line-height: 1.4; /* Keep consistent with light mode */
+  }
 }
 
 /* For mobile devices */
 @media (max-width: 480px) {
   .game-content {
-    height: calc(100vh - 110px); /* Adjust for smaller header/footer on mobile */
+    height: calc(100vh - 80px); /* Reduced from 110px */
   }
   
   .story-scroll-container {
-    padding: 0.75rem 0.75rem 0 0.75rem;
+    padding: 0.75rem 0.75rem 0 0.75rem; /* Reduced from 1rem */
   }
   
-  .fixed-options {
-    padding: 0 0.75rem 0.75rem 0.75rem;
+  .options-section {
+    padding: 0 0.75rem 0.5rem 0.75rem; /* Reduced from 1rem */
   }
   
   .game-header {
-    padding: 0.75rem 0.5rem;
+    padding: 0.5rem 0.5rem; /* Reduced from 0.75rem */
   }
   
   .game-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem; /* Reduced from 1.8rem */
   }
   
   .story-container, .history-item {
-    padding: 1.25rem;
+    padding: 1rem; /* Reduced from 1.5rem */
+    margin-bottom: 0.5rem; /* Add reduced margin */
   }
   
   .story-text, .history-text {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.95rem; /* Reduced from 1rem */
+    line-height: 1.4; /* Reduced from 1.6 */
   }
   
   .options-panel {
-    padding: 0.75rem;
-    margin-top: 0.75rem;
+    padding: 0.5rem; /* Reduced from 0.75rem */
+    margin-top: 0.5rem; /* Reduced from 0.75rem */
   }
   
   .option-button {
-    padding: 0.65rem 0.85rem;
+    padding: 0.5rem 0.75rem; /* Reduced from 0.65rem 0.85rem */
+    margin-bottom: 0.35rem; /* Reduced margin between buttons */
+  }
+  
+  .option-text {
+    font-size: 0.9rem; /* Slightly smaller text */
+  }
+  
+  .options-title {
+    font-size: 1rem; /* Smaller title */
+    margin-bottom: 0.35rem; /* Reduced margin */
   }
   
   .game-footer {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.8rem;
+    padding: 0.5rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
   }
 }
 </style> 
