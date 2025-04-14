@@ -62,51 +62,29 @@ export function getOpenAIApiKey() {
   // Check both standard and Vite-prefixed env vars
   let apiKey = '';
   
-  console.log('Looking for OpenAI API key in environment variables...');
-  
-  // For Vite environment variables (check this first as it's more likely in a Vue/Vite app)
+  // For Vite environment variables
   if (import.meta && import.meta.env) {
-    console.log('Available import.meta.env variables:', Object.keys(import.meta.env).join(', '));
-    
     if (import.meta.env.VITE_OPENAI_API_KEY) {
-      console.log('Found VITE_OPENAI_API_KEY in import.meta.env');
       apiKey = import.meta.env.VITE_OPENAI_API_KEY;
     } else if (import.meta.env.OPENAI_API_KEY) {
-      console.log('Found OPENAI_API_KEY in import.meta.env');
       apiKey = import.meta.env.OPENAI_API_KEY;
     }
   }
   
   // For direct environment variables (Node.js - fallback)
   if (!apiKey && process.env) {
-    console.log('Available process.env variables:', Object.keys(process.env).join(', '));
-    
     if (process.env.OPENAI_API_KEY) {
-      console.log('Found OPENAI_API_KEY in process.env');
       apiKey = process.env.OPENAI_API_KEY;
     } else if (process.env.VITE_OPENAI_API_KEY) {
-      console.log('Found VITE_OPENAI_API_KEY in process.env');
       apiKey = process.env.VITE_OPENAI_API_KEY;
     }
   }
   
-  if (apiKey) {
-    console.log('API key found! (First 4 chars):', apiKey.substring(0, 4) + '...');
-    return apiKey;
-  } else {
-    console.warn(`
--------------------------------------------------------------
-No OpenAI API key found in environment variables.
-To use real API calls, please create a .env file in your project root with:
-
-VITE_OPENAI_API_KEY=your_api_key_here
-
-Make sure to restart the development server after creating/modifying the .env file.
-Currently running in demo mode with predefined stories.
--------------------------------------------------------------
-`);
-    return '';
+  if (!apiKey) {
+    console.warn('No OpenAI API key found in environment variables');
   }
+  
+  return apiKey;
 }
 
 /**
@@ -126,7 +104,6 @@ export function isLocalDevelopment() {
   if (import.meta && import.meta.env) {
     // Vite sets this in development mode
     if (import.meta.env.DEV === true || import.meta.env.MODE === 'development') {
-      console.log('Detected development environment via Vite env');
       return true;
     }
   }
@@ -140,7 +117,6 @@ export function isLocalDevelopment() {
         hostname.startsWith('192.168.') || 
         hostname.startsWith('10.') ||
         hostname.includes('.local')) {
-      console.log('Detected development environment via hostname:', hostname);
       return true;
     }
   }

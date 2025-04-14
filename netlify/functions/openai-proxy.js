@@ -47,7 +47,7 @@ exports.handler = async function(event, context) {
       body: JSON.stringify(data)
     };
   } catch (error) {
-    console.error('Error in OpenAI proxy function:', error);
+    console.error('Error in OpenAI proxy function:', error.message);
     
     return {
       statusCode: 500,
