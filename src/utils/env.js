@@ -115,4 +115,36 @@ Currently running in demo mode with predefined stories.
  */
 export function hasOpenAIApiKey() {
   return hasEnv('OPENAI_API_KEY') || hasEnv('VITE_OPENAI_API_KEY');
+}
+
+/**
+ * Determines if we're running in a local development environment
+ * @returns {boolean} - True if in development environment
+ */
+export function isLocalDevelopment() {
+  // Check for development mode in Vite
+  if (import.meta && import.meta.env) {
+    // Vite sets this in development mode
+    if (import.meta.env.DEV === true || import.meta.env.MODE === 'development') {
+      console.log('Detected development environment via Vite env');
+      return true;
+    }
+  }
+  
+  // Check for development environment via location
+  if (typeof window !== 'undefined' && window.location) {
+    const hostname = window.location.hostname;
+    // Check for localhost or local IP
+    if (hostname === 'localhost' || 
+        hostname === '127.0.0.1' || 
+        hostname.startsWith('192.168.') || 
+        hostname.startsWith('10.') ||
+        hostname.includes('.local')) {
+      console.log('Detected development environment via hostname:', hostname);
+      return true;
+    }
+  }
+  
+  // Default to false if no development indicators found
+  return false;
 } 

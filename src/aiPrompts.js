@@ -5,10 +5,11 @@
  * story content using the OpenAI API.
  */
 
-import { getOpenAIApiKey } from './utils/env';
+import { getOpenAIApiKey, isLocalDevelopment } from './utils/env';
 
-// OpenAI API Configuration
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+// API Configurations
+const DIRECT_OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const NETLIFY_FUNCTION_URL = '/.netlify/functions/openai-proxy';
 const OPENAI_MODEL = 'gpt-4o'; // Updated to latest model
 
 // Demo mode flag - always false to force API usage
@@ -31,12 +32,12 @@ if (typeof window !== 'undefined') {
 export async function generateInitialStory(theme = null) {
   console.log('generateInitialStory called with theme:', theme);
   
-  // Get API key 
-  const apiKey = getOpenAIApiKey();
+  // Check if we have direct API key access or need to use proxy
+  const hasApiKey = getOpenAIApiKey();
   
-  // Use demo mode if no API key is available
-  if (!apiKey) {
-    console.log('No API key found, falling back to demo content');
+  // Use demo mode if we're in an environment without API access
+  if (!hasApiKey && !isLocalDevelopment()) {
+    console.log('No API access method available, falling back to demo content');
     return getDemoInitialStory(theme);
   }
   
@@ -54,12 +55,12 @@ export async function generateInitialStory(theme = null) {
 export async function generateStoryContinuation(currentStory, chosenOption) {
   console.log('generateStoryContinuation called with option:', chosenOption);
   
-  // Get API key
-  const apiKey = getOpenAIApiKey();
+  // Check if we have direct API key access or need to use proxy
+  const hasApiKey = getOpenAIApiKey();
   
-  // Use demo mode if no API key is available
-  if (!apiKey) {
-    console.log('No API key found, falling back to demo content');
+  // Use demo mode if we're in an environment without API access
+  if (!hasApiKey && !isLocalDevelopment()) {
+    console.log('No API access method available, falling back to demo content');
     return getDemoContinuation(currentStory, chosenOption);
   }
   
@@ -243,31 +244,47 @@ function createContinuationPrompt(currentStory, chosenOption) {
  */
 async function callOpenAI(messages) {
   try {
-    // Get API key with additional logging
+    // Check if we should use direct API call or serverless function
     const apiKey = getOpenAIApiKey();
-    console.log('API Key available:', !!apiKey);
+    const isLocal = isLocalDevelopment();
     
-    if (!apiKey) {
-      console.error('OpenAI API key not found. Ensure VITE_OPENAI_API_KEY is set in .env file.');
-      throw new Error('OpenAI API key not found in environment variables');
+    console.log('API Key available:', !!apiKey);
+    console.log('Is local development:', isLocal);
+    
+    // Determine which API endpoint to use
+    const apiUrl = isLocal && apiKey 
+      ? DIRECT_OPENAI_API_URL  // Use direct OpenAI API in local dev with key
+      : NETLIFY_FUNCTION_URL;  // Use serverless function in production
+      
+    console.log(`Using API endpoint: ${apiUrl}`);
+    
+    // Prepare request body
+    const requestBody = {
+      model: OPENAI_MODEL,
+      messages: messages,
+      temperature: 0.7,
+      max_tokens: 500,
+      top_p: 1,
+      frequency_penalty: 0.2,
+      presence_penalty: 0.2,
+    };
+    
+    // Prepare headers - include Authorization only for direct API calls
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    
+    // Add Authorization header only for direct API calls
+    if (isLocal && apiKey) {
+      headers['Authorization'] = `Bearer ${apiKey}`;
     }
     
-    console.log('Calling OpenAI API with model:', OPENAI_MODEL);
-    const response = await fetch(OPENAI_API_URL, {
+    // Make the API request
+    console.log('Calling API with model:', OPENAI_MODEL);
+    const response = await fetch(apiUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: OPENAI_MODEL,
-        messages: messages,
-        temperature: 0.7,
-        max_tokens: 500,
-        top_p: 1,
-        frequency_penalty: 0.2,
-        presence_penalty: 0.2,
-      })
+      headers: headers,
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
@@ -277,7 +294,7 @@ async function callOpenAI(messages) {
     }
 
     const data = await response.json();
-    console.log('OpenAI API response received successfully');
+    console.log('API response received successfully');
     let content = data.choices[0].message.content;
     
     // Clean the content if it's wrapped in Markdown code blocks
@@ -296,7 +313,7 @@ async function callOpenAI(messages) {
       throw new Error('Failed to parse story data from API response');
     }
   } catch (error) {
-    console.error('Error calling OpenAI API:', error);
+    console.error('Error calling API:', error);
     // Return a fallback story if API call fails
     return {
       text: "Connection to the storyteller was lost. Please try again later. Error: " + error.message,
