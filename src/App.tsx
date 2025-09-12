@@ -1,22 +1,28 @@
-import React from 'react'
-import UserList from './components/UserList'
-import PostList from './components/PostList'
-import './App.css'
+import { useGameStore } from './store/useStore'
+import WelcomeScreen from './components/WelcomeScreen'
+import GameScreen from './components/GameScreen'
+import EndScreen from './components/EndScreen'
 
 function App() {
+  const { gameStatus } = useGameStore()
+
+  const renderCurrentScreen = () => {
+    switch (gameStatus) {
+      case 'welcome':
+        return <WelcomeScreen />
+      case 'playing':
+      case 'loading':
+        return <GameScreen />
+      case 'ended':
+        return <EndScreen />
+      default:
+        return <WelcomeScreen />
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>CYOA Game - React + TypeScript + Axios + Zustand</h1>
-        <p>A simple app demonstrating React with TypeScript, Axios for API calls, and Zustand for state management.</p>
-      </header>
-      
-      <main className="App-main">
-        <div className="App-content">
-          <UserList />
-          <PostList />
-        </div>
-      </main>
+    <div>
+      {renderCurrentScreen()}
     </div>
   )
 }
