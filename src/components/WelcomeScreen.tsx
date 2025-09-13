@@ -16,7 +16,7 @@ const WelcomeScreen: React.FC = () => {
       key: 'urban',
       name: 'Neon City',
       description: 'A cyberpunk metropolis of shadows and secrets',
-      icon: '🏙️'
+      icon: '🏢'
     },
     {
       key: 'space',
@@ -32,31 +32,26 @@ const WelcomeScreen: React.FC = () => {
 
   return (
     <div>
-      <div>
-        <h1>Chuzapath</h1>
-        <p>Choose Your Own Adventure</p>
-        <p>
+      <div style={{ textAlign: 'center' }}>
+        <h1 style={{ margin: '0' }}>Chuzapath</h1>
+        <i className="text-muted">Choose Your Own Adventure</i>
+        <p style={{ margin: '1rem 0 2rem 0', display: 'block', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
           Embark on an AI-generated journey where every choice shapes your destiny. 
           Each setting offers unique challenges, mysterious items, and branching paths.
         </p>
         
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {settings.map((setting) => (
             <button
               key={setting.key}
               onClick={() => handleSettingSelect(setting.key)}
+              style={{ textAlign: 'left', display: 'flex', gap: '1rem', alignItems: 'center', padding: '1.5rem', cursor: 'pointer', flexWrap: 'wrap' }}
             >
-              <div>{setting.icon}</div>
+              <div style={{ fontSize: '2rem', filter: 'saturate(0) contrast(0)' }}>{setting.icon}</div>
               <h3>{setting.name}</h3>
-              <p>{setting.description}</p>
+              <p style={{ margin: '0' }}>{setting.description}</p>
             </button>
           ))}
-        </div>
-        
-        <div>
-          <p>✨ Each adventure is unique and AI-generated</p>
-          <p>🎒 You'll receive a special item with hidden powers</p>
-          <p>📖 Stories are 8-12 turns with meaningful choices</p>
         </div>
       </div>
     </div>

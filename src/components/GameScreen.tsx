@@ -173,13 +173,12 @@ const GameScreen: React.FC = () => {
               overflowY: 'auto',
               border: '1px solid #ccc',
               padding: '16px',
-              backgroundColor: '#f9f9f9',
+              backgroundColor: '#F9F9F992',
               borderRadius: '8px',
               marginBottom: '16px',
               whiteSpace: 'pre-wrap',
-              fontFamily: 'monospace',
-              fontSize: '14px',
-              lineHeight: '1.5'
+              fontSize: '18px',
+              lineHeight: '1.8'
             }}
           >
             {getCombinedStoryText()}
