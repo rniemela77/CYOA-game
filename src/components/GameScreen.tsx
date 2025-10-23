@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useGameStore } from '../store/useStore'
 import { generateScene } from '../services/aiService'
-import InventoryPanel from './InventoryPanel'
 
 const GameScreen: React.FC = () => {
   const {
@@ -66,7 +65,6 @@ const GameScreen: React.FC = () => {
       
       const nextStory = await generateScene({
         objective: currentStory.objective,
-        inventory: currentStory.inventory,
         chosenOption: choice,
         lastSceneText: currentStory.text
       })
@@ -185,7 +183,7 @@ const GameScreen: React.FC = () => {
           </div>
           
           <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-            {currentStory && currentStory.options.map((option, index) => (
+            {currentStory && currentStory.options.map((option: string, index: number) => (
               <button
                 style={{
                   padding: '1rem',
@@ -201,9 +199,7 @@ const GameScreen: React.FC = () => {
           </div>
         </div>
         
-        <InventoryPanel 
-          inventory={currentStory?.inventory || []}
-        />
+        {/* Inventory removed */}
       </div>
     </div>
   )

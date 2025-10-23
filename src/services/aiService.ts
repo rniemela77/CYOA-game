@@ -1,9 +1,9 @@
 // chuzapath-core.ts — Minimal CYOA generator
 //
 // Contract (simple):
-// - Model is STATELESS. Your app owns objective, inventory, and sceneCount.
+// - Model is STATELESS. Your app owns objective and sceneCount.
 // - Call generateScene({ setting }) to start a game.
-// - Call generateScene({ objective, inventory, chosenOption, lastSceneText? }) to continue.
+// - Call generateScene({ objective, chosenOption, lastSceneText? }) to continue.
 // - We send one system prompt with all rules and ONE instruction to return JSON.
 // - The model never sees/sets sceneCount; you increment it in your app.
 
@@ -21,7 +21,6 @@ export type GameSetting = 'forest' | 'urban' | 'space';
 export interface SceneData {
   text: string;
   options: string[];        // exactly 4 options, 3–6 words each
-  inventory: string[];      // e.g., ["rope", "keycard"]
   backgroundColor: string;  // short CSS color (may be "")
   objective: string;        // set on first scene; persist thereafter
 }
@@ -33,7 +32,6 @@ export async function generateScene(args: {
 
   // Continue a game: provide these (no setting needed)
   objective?: string;
-  inventory?: string[];
   chosenOption?: string;
 
   // Optional continuity helpers (cheap but optional)
@@ -85,11 +83,10 @@ function SYSTEM_PROMPT(): string {
     `Write vivid, immersive, second-person scenes in simple, clear prose (${READING_LEVEL}) that are extremely interesting and engaging.`,
     `Each scene is ${SCENE_WORDS.min}-${SCENE_WORDS.max} words with 1–2 sensory details and player agency.`,
     `Generate exactly 4 distinct options that the player would want to choose to do that meaningfully advance the story; each ${OPTION_WORDS.min}-${OPTION_WORDS.max} words and clearly tied to the scene.`,
-    `If the CHOSEN option starts with "Pick up " or "Grab " or "Take ", add that item (text after it) to inventory in the next scene.`,
     `Set "objective" only on the first scene; thereafter keep the same objective.`,
     `"backgroundColor" is a short CSS color that fits the scene/environment.`,
     `Respond with ONE JSON object and nothing else, shaped exactly as:`,
-    `{"text":"","options":["","","",""],"inventory":[],"backgroundColor":"","objective":""}`,
+    `{"text":"","options":["","","",""],"backgroundColor":"","objective":""}`,
   ].join('\n');
 }
 
@@ -104,12 +101,10 @@ function userStart(setting: GameSetting): string {
 
 function userContinue({
   objective = '',
-  inventory = [],
   chosenOption = '',
   lastSceneText,
 }: {
   objective?: string;
-  inventory?: string[];
   chosenOption?: string;
   lastSceneText?: string;
 }): string {
@@ -118,14 +113,13 @@ function userContinue({
     lastSceneText ? `Last scene: "${lastSceneText}"` : ``,
 
     // start chance/conditional stuff
-    Math.random() > 0.5 ? `Add a surprise/twist to the story based on the player's last choice.` : ``,
-    Math.random() > 0.5 ? `Mention a noteworthy portable item, and generate an option to pick it up.` : ``,
+    Math.random() > 0.5 ? `Add a surprise/twist as a result of the player's last choice.` : ``,
+    Math.random() > 0.5 ? `Mention a noteworthy detail or tool the player might use.` : ``,
     Math.random() > 0.5 ? `Hint at a conflict or problem the player might face.` : ``,
-    Math.random() > 0.5 ? `Immediately create a new conflict or problem for the player to face.` : ``,
+    Math.random() > 0.5 ? `Immediately put the player in a conflict or problem.` : ``,
     // end chance/conditional stuff
 
     `Chosen option: "${chosenOption}"`,
-    `Inventory: ${JSON.stringify(inventory)}`,
     `Objective: ${objective}`,
   ];
   return lines.filter(Boolean).join('\n');
@@ -140,7 +134,7 @@ function parseJson(s: string) {
 
 function validate(d: any): SceneData {
   if (!d || typeof d !== 'object') throw new Error('Invalid JSON payload');
-  const required = ['text', 'options', 'inventory', 'objective'] as const;
+  const required = ['text', 'options', 'objective'] as const;
   for (const k of required) if (d[k] === undefined) throw new Error(`Missing field: ${k}`);
 
   if (!Array.isArray(d.options) || d.options.length !== 4) {
@@ -150,7 +144,6 @@ function validate(d: any): SceneData {
   return {
     text: String(d.text),
     options: d.options.map((o: any) => String(o)),
-    inventory: Array.isArray(d.inventory) ? d.inventory.map(String) : [],
     backgroundColor: typeof d.backgroundColor === 'string' ? d.backgroundColor : '',
     objective: String(d.objective),
   };

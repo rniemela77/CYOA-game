@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { StoryData, GameSetting } from '../services/aiService'
+import { SceneData, GameSetting } from '../services/aiService'
 import { StoryEntry } from '../types/story'
 
 // Game state types
@@ -12,8 +12,7 @@ interface GameState {
   selectedSetting: GameSetting | null
   
   // Story Data
-  currentStory: StoryData | null
-  inventory: string[]
+  currentStory: SceneData | null
   storyHistory: StoryEntry[]
   
   // UI State
@@ -25,7 +24,7 @@ interface GameState {
   // Actions
   startGame: (setting: GameSetting) => void
   makeChoice: (choice: string) => void
-  setCurrentStory: (story: StoryData, chosenOption?: string) => void
+  setCurrentStory: (story: SceneData, chosenOption?: string) => void
   setLoading: (loading: boolean) => void
   setError: (error: string | null) => void
   setBackgroundColor: (color: string) => void
@@ -43,7 +42,6 @@ export const useGameStore = create<GameState>((set, get) => ({
   currentTurn: 0,
   selectedSetting: null,
   currentStory: null,
-  inventory: [],
   storyHistory: [],
   backgroundColor: '#1a1a1a',
   error: null,
@@ -64,7 +62,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     }
   },
 
-  setCurrentStory: (story: StoryData, chosenOption?: string) => set((state) => {
+  setCurrentStory: (story: SceneData, chosenOption?: string) => set((state) => {
     // Move previous story to history if it exists
     let newHistory = [...state.storyHistory]
     if (state.currentStory) {
@@ -80,7 +78,6 @@ export const useGameStore = create<GameState>((set, get) => ({
     
     return {
       currentStory: story,
-      inventory: story.inventory,
       backgroundColor: story.backgroundColor,
       gameStatus: 'playing',
       storyHistory: newHistory
@@ -110,7 +107,6 @@ export const useGameStore = create<GameState>((set, get) => ({
     currentTurn: 0,
     selectedSetting: null,
     currentStory: null,
-    inventory: [],
     storyHistory: [],
     backgroundColor: '#1a1a1a',
     error: null
