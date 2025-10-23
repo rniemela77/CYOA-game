@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { SceneData, GameSetting } from '../services/aiService'
+import { SceneData } from '../services/aiService'
+import type { GameSetting } from '../config/settings'
 import { StoryEntry } from '../types/story'
 
 // Game state types

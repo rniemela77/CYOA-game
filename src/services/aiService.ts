@@ -15,7 +15,7 @@ const SCENE_WORDS = { min: 60, max: 100 } as const;
 const OPTION_WORDS = { min: 3, max: 6 } as const;
 
 // Public types
-export type GameSetting = 'forest' | 'urban' | 'space';
+import type { GameSetting } from '../config/settings'
 
 export interface SceneData {
   text: string;

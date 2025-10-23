@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 1rem;
-  min-height: 100vh;
+  max-height: 100vh;
 }
 
 /* UI, buttons, body copy */
@@ -21,4 +21,18 @@ h1 {
 
 .text-muted {
     opacity: 0.5;
+}
+
+.game-option-button {
+  background: #555;
+  color: #fff;
+  border: none;
+  text-shadow: 0px 0px 3px #000;
+  font-size: 1.1rem;
+  padding: 1.5rem;
+
+  &:hover {
+    background: #888;
+    cursor: pointer;
+  }
 }

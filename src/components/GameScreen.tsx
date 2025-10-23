@@ -170,10 +170,7 @@ const GameScreen: React.FC = () => {
           <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
             {currentStory && currentStory.options.map((option: string, index: number) => (
               <button
-                style={{
-                  padding: '1rem',
-                  cursor: 'pointer'
-                }}
+                className="game-option-button"
                 key={index}
                 onClick={() => handleChoiceSelect(option)}
                 disabled={gameStatus === 'loading'}
