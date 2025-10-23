@@ -148,11 +148,11 @@ const GameScreen: React.FC = () => {
 
       {/* story container */}
       <div>
-        <div>
+        <div style={{display: 'flex', flexDirection: 'column', height: 'calc(100vh - 2rem)'}}>
           <div 
             ref={storyContainerRef}
             style={{
-              height: '400px',
+              flex: '1',
               overflowY: 'auto',
               border: '1px solid #ccc',
               padding: '16px',
