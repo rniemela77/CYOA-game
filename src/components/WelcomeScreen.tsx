@@ -16,7 +16,7 @@ const WelcomeScreen: React.FC = () => {
   return (
     <div>
       <div style={{ textAlign: 'center' }}>
-        <i className="text-muted">Choose Your Own Adventure</i>
+        <h2 style={{ fontSize: '1.2rem', margin: '3rem 0 1.5rem' }}>Choose a setting for your adventure:</h2>
         
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {settings.map((setting) => (
