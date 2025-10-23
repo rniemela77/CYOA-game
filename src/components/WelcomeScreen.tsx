@@ -1,15 +1,16 @@
 import React from 'react'
 import { useGameStore } from '../store/useStore'
-import type { GameSetting } from '../config/settings'
+import type { SettingItem } from '../config/settings'
 import { SETTINGS } from '../config/settings'
+import SettingButton from './SettingButton'
 
 const WelcomeScreen: React.FC = () => {
   const { startGame } = useGameStore()
 
   const settings = SETTINGS
 
-  const handleSettingSelect = (setting: GameSetting) => {
-    startGame(setting)
+  const handleSettingSelect = (setting: SettingItem) => {
+    startGame(setting.key)
   }
 
   return (
@@ -19,16 +20,11 @@ const WelcomeScreen: React.FC = () => {
         
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {settings.map((setting) => (
-            <button
+            <SettingButton
               key={setting.key}
-              onClick={() => handleSettingSelect(setting.key)}
-              className={`welcome-option welcome-option--${setting.key}`}
-              style={{ ['--overlay-color' as any]: (setting as any).color }}
-            >
-              <div className="welcome-option__overlay" aria-hidden />
-              <div className="welcome-option__icon">{setting.icon}</div>
-              <h3 className="welcome-option__name">{setting.name}</h3>
-            </button>
+              setting={setting}
+              onSelect={handleSettingSelect}
+            />
           ))}
         </div>
       </div>
