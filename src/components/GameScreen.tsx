@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useGameStore } from '../store/useStore'
 import { generateScene } from '../services/aiService'
 
@@ -21,6 +21,7 @@ const GameScreen: React.FC = () => {
 
   const hasGeneratedStory = useRef(false)
   const storyContainerRef = useRef<HTMLDivElement>(null)
+  const [selectedOption, setSelectedOption] = useState<string | null>(null)
 
   const MAX_TURNS = 6
 
@@ -56,10 +57,18 @@ const GameScreen: React.FC = () => {
     }
   }, [gameStatus, selectedSetting, currentStory, setCurrentStory, setLoading, setError, clearError])
 
+  // Clear the selected option once loading completes
+  useEffect(() => {
+    if (gameStatus !== 'loading' && selectedOption) {
+      setSelectedOption(null)
+    }
+  }, [gameStatus, selectedOption])
+
   const handleChoiceSelect = async (choice: string) => {
     if (!currentStory) return
 
     try {
+      setSelectedOption(choice)
       setLoading(true)
       clearError()
       
@@ -171,6 +180,20 @@ const GameScreen: React.FC = () => {
             {currentStory && currentStory.options.map((option: string, index: number) => (
               <button
                 className="game-option-button"
+                style={{
+                  opacity:
+                    gameStatus === 'loading' && selectedOption && selectedOption !== option
+                      ? 0.4
+                      : 1,
+                  outline:
+                    gameStatus === 'loading' && selectedOption === option
+                      ? '2px solid #000'
+                      : undefined,
+                  backgroundColor:
+                    gameStatus === 'loading' && selectedOption === option
+                      ? '#00000012'
+                      : undefined
+                }}
                 key={index}
                 onClick={() => handleChoiceSelect(option)}
                 disabled={gameStatus === 'loading'}

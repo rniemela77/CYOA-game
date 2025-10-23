@@ -30,9 +30,14 @@ h1 {
   text-shadow: 0px 0px 3px #000;
   font-size: 1.1rem;
   padding: 1.5rem;
+}
 
-  &:hover {
-    background: #888;
-    cursor: pointer;
-  }
+.game-option-button:not(:disabled):hover {
+  background: #888;
+  cursor: pointer;
+}
+
+.game-option-button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
