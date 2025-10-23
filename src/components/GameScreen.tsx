@@ -118,36 +118,36 @@ const GameScreen: React.FC = () => {
     )
   }
 
-  // Combine story history with current story
-  const getCombinedStoryText = () => {
-    let combinedText = ''
-    
-    // Add all story history entries
-    storyHistory.forEach((entry) => {
-      if (entry.text) {
-        combinedText += `\n${entry.text}\n`
-        
-        if (entry.chosenOption) {
-          combinedText += `\n\nYou chose: ${entry.chosenOption}\n`
-        }
-      }
-    })
-    
-    // Add current story
-    if (currentStory) {
-      combinedText += `\n${currentStory.text}\n`
-    }
-    
-    // Add loading message if currently loading
-    if (gameStatus === 'loading') {
-      if (currentStory) {
-        combinedText += `\n\n--- Generating your adventure... ---`
-      } else {
-        combinedText = `--- Generating... ---`
-      }
-    }
-    
-    return combinedText.trim()
+  // Build a list of message cards from history + current story
+  const renderMessageCards = () => {
+    return (
+      <div className="story-list">
+        {storyHistory.map((entry) => (
+          <React.Fragment key={entry.id}>
+            <div className="message-card message-card--scene">
+              <p>{entry.text}</p>
+            </div>
+            {entry.chosenOption && (
+              <div className="message-choice">You chose: {entry.chosenOption}</div>
+            )}
+          </React.Fragment>
+        ))}
+        {currentStory && (
+          <div className="message-card message-card--scene">
+            <p>{currentStory.text}</p>
+          </div>
+        )}
+        {gameStatus === 'loading' && selectedOption && (
+          <div className="message-choice">You chose: {selectedOption}</div>
+        )}
+        {gameStatus === 'loading' && (
+          <div className="message-card message-card--loading">
+            <span>Generating your adventure</span>
+            <span className="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+          </div>
+        )}
+      </div>
+    )
   }
 
   return (
@@ -162,7 +162,7 @@ const GameScreen: React.FC = () => {
             ref={storyContainerRef}
             className="story-container"
           >
-            {getCombinedStoryText()}
+            {renderMessageCards()}
           </div>
           
           <div className="options-container">
