@@ -153,47 +153,26 @@ const GameScreen: React.FC = () => {
   return (
     <div>
       {/* background color overlay */}
-      <div style={{position:'fixed', top: '0px', right: '0px', zIndex: 10, width: '100vw', height: '100vh', backgroundColor, transition: 'background-color 3.5s ease', opacity: '0.8', mixBlendMode: 'color-burn', pointerEvents: 'none'}}></div>
+      <div className="color-overlay" style={{ backgroundColor }}></div>
 
       {/* story container */}
       <div>
-        <div style={{display: 'flex', flexDirection: 'column', height: 'calc(100vh - 2rem)'}}>
+        <div className="game-layout">
           <div 
             ref={storyContainerRef}
-            style={{
-              flex: '1',
-              overflowY: 'auto',
-              border: '1px solid #ccc',
-              padding: '16px',
-              backgroundColor: '#F9F9F992',
-              borderRadius: '8px',
-              marginBottom: '16px',
-              whiteSpace: 'pre-wrap',
-              fontSize: '18px',
-              lineHeight: '1.8'
-            }}
+            className="story-container"
           >
             {getCombinedStoryText()}
           </div>
           
-          <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+          <div className="options-container">
             {currentStory && currentStory.options.map((option: string, index: number) => (
               <button
-                className="game-option-button"
-                style={{
-                  opacity:
-                    gameStatus === 'loading' && selectedOption && selectedOption !== option
-                      ? 0.4
-                      : 1,
-                  outline:
-                    gameStatus === 'loading' && selectedOption === option
-                      ? '2px solid #000'
-                      : undefined,
-                  backgroundColor:
-                    gameStatus === 'loading' && selectedOption === option
-                      ? '#00000012'
-                      : undefined
-                }}
+                className={`game-option-button ${
+                  gameStatus === 'loading' && selectedOption && selectedOption !== option ? 'option--dimmed' : ''
+                } ${
+                  gameStatus === 'loading' && selectedOption === option ? 'option--active-loading' : ''
+                }`}
                 key={index}
                 onClick={() => handleChoiceSelect(option)}
                 disabled={gameStatus === 'loading'}

@@ -41,3 +41,52 @@ h1 {
   opacity: 0.5;
   cursor: default;
 }
+
+/* GameScreen layout and elements */
+.color-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  transition: background-color 3.5s ease;
+  opacity: 0.8;
+  mix-blend-mode: color-burn;
+  pointer-events: none;
+  background-color: var(--overlay-color, transparent);
+}
+
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 2rem);
+}
+
+.story-container {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 16px;
+  background-color: #F9F9F992;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.game-option-button.option--active-loading {
+  outline: 2px solid #000;
+  background-color: #00000012;
+}
+
+.game-option-button.option--dimmed {
+  opacity: 0.4;
+}
