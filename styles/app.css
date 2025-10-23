@@ -4,6 +4,72 @@ body {
   max-height: 100vh;
 }
 
+/* Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #ffffffd9;
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid #ddd;
+  margin: -1rem -1rem 1rem -1rem; /* pull to edges to align with body padding */
+}
+
+.app-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.brand {
+  font-family: "Fraunces", serif;
+  font-weight: 900;
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.5rem;
+}
+
+.hamburger {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #333;
+}
+
+.nav-menu {
+  position: absolute;
+  right: 0.5rem;
+  top: 3.25rem;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.nav-menu a {
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.nav-menu a:hover {
+  background: #f3f3f3;
+}
+
 /* UI, buttons, body copy */
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
@@ -52,7 +118,7 @@ h1 {
   height: 100vh;
   transition: background-color 3.5s ease;
   opacity: 0.8;
-  mix-blend-mode: color-burn;
+  mix-blend-mode: color;
   pointer-events: none;
   background-color: var(--overlay-color, transparent);
 }
@@ -60,7 +126,7 @@ h1 {
 .game-layout {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 2rem);
+  height: calc(100vh - 5rem);
 }
 
 .story-container {

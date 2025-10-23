@@ -10,9 +10,10 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "axios": "^1.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "axios": "^1.6.0",
+    "react-router-dom": "^7.9.4",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
@@ -27,7 +28,14 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   },
-  "keywords": ["react", "typescript", "axios", "zustand", "cyoa", "game"],
+  "keywords": [
+    "react",
+    "typescript",
+    "axios",
+    "zustand",
+    "cyoa",
+    "game"
+  ],
   "author": "",
   "license": "MIT"
 }

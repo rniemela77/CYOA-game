@@ -15,7 +15,6 @@ const WelcomeScreen: React.FC = () => {
   return (
     <div>
       <div style={{ textAlign: 'center' }}>
-        <h1 style={{ margin: '0' }}>Chuzapath</h1>
         <i className="text-muted">Choose Your Own Adventure</i>
         
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
