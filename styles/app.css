@@ -215,3 +215,40 @@ h1 {
 .game-option-button.option--dimmed {
   opacity: 0.4;
 }
+
+.welcome-option__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--overlay-color, transparent);
+  mix-blend-mode: color-burn;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.welcome-option {
+  position: relative;
+  flex: 1 1 150px;
+  overflow: hidden;
+  padding: 1rem;
+  cursor: pointer;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.welcome-option__name {
+  text-shadow: 1px 2px 2px #00000035;
+  z-index: 10;
+  font-size: 1.1rem;
+}
+
+.welcome-option__icon {
+  mask-image: linear-gradient(to left, transparent, black);
+  font-size: 6rem;
+  opacity: 0.2;
+  filter: saturate(0) contrast(0);
+  position: absolute;
+  left: 0;
+  bottom: -30px;
+}

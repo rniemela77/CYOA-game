@@ -22,10 +22,12 @@ const WelcomeScreen: React.FC = () => {
             <button
               key={setting.key}
               onClick={() => handleSettingSelect(setting.key)}
-              style={{ position: 'relative', flex: '1 1 150px', overflow: 'hidden', textAlign: 'left', display: 'flex', gap: '1rem', alignItems: 'center', padding: '1rem', cursor: 'pointer', flexWrap: 'wrap' }}
+              className={`welcome-option welcome-option--${setting.key}`}
+              style={{ ['--overlay-color' as any]: (setting as any).color }}
             >
-              <div style={{ fontSize: '6rem', opacity: 0.2, filter: 'saturate(0) contrast(0)', position: 'absolute', left: '0', bottom: '-30px' }}>{setting.icon}</div>
-              <h3 style={{ textShadow: '0px 0px 3px #00000069', zIndex: 10, fontSize: '1.1rem' }}>{setting.name}</h3>
+              <div className="welcome-option__overlay" aria-hidden />
+              <div className="welcome-option__icon">{setting.icon}</div>
+              <h3 className="welcome-option__name">{setting.name}</h3>
             </button>
           ))}
         </div>
