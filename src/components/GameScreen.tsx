@@ -64,7 +64,6 @@ const GameScreen: React.FC = () => {
       clearError()
       
       const nextStory = await generateScene({
-        objective: currentStory.objective,
         chosenOption: choice,
         lastSceneText: currentStory.text
       })
@@ -149,20 +148,6 @@ const GameScreen: React.FC = () => {
 
       {/* story container */}
       <div>
-        {currentStory?.objective && (
-          <div
-            style={{
-              marginBottom: '12px',
-              padding: '8px 12px',
-              backgroundColor: '#fffbe6',
-              border: '1px solid #f0e6a6',
-              borderRadius: '8px',
-              color: '#5b4a00'
-            }}
-          >
-            <strong>Objective:</strong> {currentStory.objective}
-          </div>
-        )}
         <div>
           <div 
             ref={storyContainerRef}
@@ -198,8 +183,6 @@ const GameScreen: React.FC = () => {
             ))}
           </div>
         </div>
-        
-        {/* Inventory removed */}
       </div>
     </div>
   )
