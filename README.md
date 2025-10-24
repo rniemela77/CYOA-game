@@ -5,7 +5,7 @@ A simple React application demonstrating the use of TypeScript, Axios for API ca
 ## Features
 
 - **React 18** with TypeScript
-- **Axios** for HTTP requests to JSONPlaceholder API
+- **Axios** for HTTP requests
 - **Zustand** for lightweight state management
 - **Vite** for fast development and building
 - **ESLint** for code linting
@@ -37,19 +37,3 @@ npm run dev
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run type-check` - Run TypeScript type checking
-
-## How It Works
-
-1. **UserList Component**: Fetches users from JSONPlaceholder API using Axios and displays them in a list
-2. **PostList Component**: Shows posts for the selected user, with the ability to add new posts
-3. **Zustand Store**: Manages global state including users, posts, loading states, and errors
-4. **TypeScript**: Provides type safety throughout the application
-
-## Technologies Used
-
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Axios** - HTTP client
-- **Zustand** - State management
-- **Vite** - Build tool and dev server
-- **ESLint** - Code linting
